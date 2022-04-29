@@ -1,0 +1,73 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    // Version definitions in a single place
+    ext {
+        // SDK and tools
+        minSdkVersion = 26
+        targetSdkVersion = 31
+        compileSdkVersion = 31
+
+        // App dependencies
+        gradleVersion = '7.1.2'
+        kotlinVersion = "1.6.0"
+        appCompatVersion = "1.4.0"
+
+        materialVersion = "1.4.0"
+        splashScreenVersion = "1.0.0-alpha01"
+
+        constraintLayoutVersion = "2.1.1"
+        coroutinesVersion = "1.6.0"
+        dataStoreVersion = "1.0.0"
+        espressoVersion = "3.4.0"
+        fragmentVersion = "1.4.0"
+        junitVersion = "4.13.2"
+        ktxVersion = "1.7.0"
+        lifecycleVersion = "2.4.0"
+        gmsPlayServicesMapsVersion = "18.0.0"
+        gmsplayServicesLocationVersion = "19.0.1"
+        easyPermissionsVersion = "3.0.0"
+        protoBufferLiteVersion = "3.19.1"
+
+        navigationVersion = "2.4.1"
+        roomVersion = "2.3.0"
+        testExtJunitVersion = "1.1.2"
+        hiltAndroidXVersion = "1.0.0"
+        hiltVersion = "2.40.1"
+        kaptVersion = "2.40.1"
+        mapsVersionSecrets = "2.0.0"
+        retrofitVersion = "2.9.0"
+        okHttpVersion = "4.9.0"
+        gsonVersion = "2.8.9"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradleVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:$mapsVersionSecrets"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+plugins {
+    id 'com.android.application' version '7.1.2' apply false
+    id 'com.android.library' version '7.1.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.5.30' apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
