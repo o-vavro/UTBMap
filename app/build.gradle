@@ -14,7 +14,7 @@ android {
     compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.atlasstudio.naurad"
+        applicationId "com.atlasstudio.utbmap"
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
         versionCode 1

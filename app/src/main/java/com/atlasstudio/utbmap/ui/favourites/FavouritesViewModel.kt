@@ -2,9 +2,9 @@ package com.atlasstudio.utbmap.ui.favourites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.atlasstudio.utbmap.data.LocationWithOffices
-import com.atlasstudio.utbmap.data.TouchedLocation
+import com.atlasstudio.utbmap.data.Office
 import com.atlasstudio.utbmap.repository.LocationOfficeRepository
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ class FavouritesViewModel @Inject constructor(
     private val state = MutableStateFlow<FavouritesFragmentState>(FavouritesFragmentState.Init)
     val mState: StateFlow<FavouritesFragmentState> get() = state
 
-    suspend fun createFavouritesFlow(): Flow<List<TouchedLocation>> {
+    suspend fun createFavouritesFlow(): Flow<List<Office?>> {
         return repo.getFavouriteLocations()
     }
 
@@ -27,18 +27,19 @@ class FavouritesViewModel @Inject constructor(
         initialize()
     }
 
-    fun onFavouriteSelected(location : TouchedLocation) {
+    fun onFavouriteSelected(location : Office) {
         viewModelScope.launch {
-            repo.getLocatedOfficesForFavourite(location)
+            /*repo.getLocatedOfficesForFavourite(location)
                 .collect {
                     navigateBack(LocationWithOffices(it.location, it.offices))
-                }
+                }*/
+            navigateBack(location)
         }
     }
 
-    fun onFavouriteDelete(location: TouchedLocation) {
+    fun onFavouriteDelete(location: Office) {
         viewModelScope.launch {
-            repo.deleteLocation(location)
+            repo.unsetFavourite(location)
         }
         showDeletedSnackBar()
     }
@@ -47,7 +48,7 @@ class FavouritesViewModel @Inject constructor(
         state.value = FavouritesFragmentState.Init
     }
 
-    private fun navigateBack(location : LocationWithOffices) {
+    private fun navigateBack(location : Office) {
         state.value = FavouritesFragmentState.NavigateBackWithResult(location)
     }
 
@@ -58,6 +59,6 @@ class FavouritesViewModel @Inject constructor(
 
 sealed class FavouritesFragmentState {
     object Init : FavouritesFragmentState()
-    data class NavigateBackWithResult(val location : LocationWithOffices) : FavouritesFragmentState()
+    data class NavigateBackWithResult(val location : Office) : FavouritesFragmentState()
     object SnackBarFavouriteDeleted: FavouritesFragmentState()
 }

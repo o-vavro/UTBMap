@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.atlasstudio.utbmap.R
-import com.atlasstudio.utbmap.data.LocationWithOffices
-import com.atlasstudio.utbmap.data.TouchedLocation
+import com.atlasstudio.utbmap.data.Office
 import com.atlasstudio.utbmap.databinding.FragmentFavouritesBinding
 import com.atlasstudio.utbmap.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +56,9 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavouritesAda
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val favourite = favouritesAdapter.currentList[viewHolder.adapterPosition]
-                    viewModel.onFavouriteDelete(favourite)
+                    favourite.let {
+                        viewModel.onFavouriteDelete(favourite)
+                    }
                 }
             }).attachToRecyclerView(recyclerViewFavourites)
         }
@@ -93,15 +94,15 @@ class FavouritesFragment : Fragment(R.layout.fragment_favourites), FavouritesAda
         }
     }
 
-    override fun onItemClick(favourite: TouchedLocation) {
+    override fun onItemClick(favourite: Office) {
         viewModel.onFavouriteSelected(favourite)
     }
 
-    override fun onButtonDeleteClick(favourite: TouchedLocation) {
+    override fun onButtonDeleteClick(favourite: Office) {
         viewModel.onFavouriteDelete(favourite)
     }
 
-    private fun handleNavigateBack(location: LocationWithOffices) {
+    private fun handleNavigateBack(location: Office) {
         mBinding.recyclerViewFavourites.clearFocus()
         setFragmentResult(
             "favourites_request",

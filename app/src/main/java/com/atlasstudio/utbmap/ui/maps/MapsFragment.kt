@@ -16,10 +16,10 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.atlasstudio.utbmap.R
-import com.atlasstudio.utbmap.data.LocationWithOffices
+import com.atlasstudio.utbmap.data.Office
 import com.atlasstudio.utbmap.data.OfficeType
 import com.atlasstudio.utbmap.databinding.FragmentMapsBinding
-import com.atlasstudio.utbmap.net.utils.ErrorResponseType
+//import com.atlasstudio.utbmap.net.utils.ErrorResponseType
 import com.atlasstudio.utbmap.utils.showToast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -75,7 +75,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
         setHasOptionsMenu(true)
 
         setFragmentResultListener("favourites_request") { _, bundle ->
-            val result = bundle.getParcelable<LocationWithOffices>("favourites_result")
+            val result = bundle.getParcelable<LatLng>("favourites_result")
             viewModel.onFavouritesResult(result)
         }
     }
@@ -98,7 +98,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
 
         enableCurrentLocation()
 
-        val zlin = LatLng(49.230505, 17.657103)
+        val zlin = LatLng(49.2305, 17.6575)
         /*var currentLocation: LatLng? = null
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         if (mMap.isMyLocationEnabled) {
@@ -108,7 +108,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
                     // Set the map's camera position to the current location of the device.
                     currentLocation = LatLng(task.result.latitude, task.result.longitude)
                 }*/
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(viewModel.lastPosition /*?: (currentLocation*/ ?: zlin/*)*/, /*viewModel.lastZoom*/14.5f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zlin, 18.2f))
             /*}
         }*/
 
@@ -134,7 +134,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
         //mTapTextView.text = "long pressed, point=$point"
         mMap.clear()
 
-        mMap.addMarker(MarkerOptions().position(pos))
+        //mMap.addMarker(MarkerOptions().position(pos))
         mMap.animateCamera(CameraUpdateFactory.newLatLng(pos))
 
         handleFavourite(false)
@@ -186,7 +186,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
                 //mBinding.statusText.text = state.message
                 requireActivity().showToast(state.message)
             }
-            is MapsFragmentState.ShowTypeToast -> {
+            /*is MapsFragmentState.ShowTypeToast -> {
                 //mBinding.statusText.text = state.message
                 requireActivity().showToast(when(state.error) {
                     ErrorResponseType.LocationForOfficeError ->
@@ -200,8 +200,8 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
                     ErrorResponseType.LocationTranslationError ->
                         getString(R.string.location_translation_error)
                 })
-            }
-            is MapsFragmentState.SetMarkers -> handleMarkers(state.location)
+            }*/
+            //is MapsFragmentState.SetMarkers -> handleMarkers(state.location)
             is MapsFragmentState.IsFavourite -> handleFavourite(state.isFavourite)
             is MapsFragmentState.NavigateToFavourites -> handleShowFavourites()
             is MapsFragmentState.Init -> Unit
@@ -218,7 +218,7 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
         }
     }
 
-    private fun handleMarkers(lwo: LocationWithOffices) {
+    /*private fun handleMarkers(lwo: LocationWithOffices) {
         /*for(marker in mCurrentMarkers) {
             marker?.remove()
         }*/
@@ -260,12 +260,12 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
             cameraBounds.include(lwo.location.location)
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraBounds.build(), 50))
-    }
+    }*/
 
     private fun handleFavourite(favourite: Boolean) {
         val favouriteMark = mMenu.findItem(R.id.action_mark_favourite)
         favouriteMark.isChecked = favourite
-        favouriteMark.icon = AppCompatResources.getDrawable(context!!, if (favouriteMark.isChecked) R.drawable.ic_star else R.drawable.ic_star_border)
+        favouriteMark.icon = AppCompatResources.getDrawable(requireContext(), if (favouriteMark.isChecked) R.drawable.ic_star else R.drawable.ic_star_border)
     }
 
     private fun handleShowFavourites() {
@@ -318,10 +318,10 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
                     if (!mBinding.progress.isShown) {
                         item.isChecked = !item.isChecked
                         if (item.isChecked) {
-                            item.icon = AppCompatResources.getDrawable(context!!, R.drawable.ic_star)
+                            item.icon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_star)
                             viewModel.storeCurrentLocation()
                         } else {
-                            item.icon = AppCompatResources.getDrawable(context!!, R.drawable.ic_star_border)
+                            item.icon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_star_border)
                             viewModel.deleteCurrentLocation()
                         }
                     }

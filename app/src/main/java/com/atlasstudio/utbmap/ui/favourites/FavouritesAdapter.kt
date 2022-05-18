@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.atlasstudio.utbmap.data.TouchedLocation
+import com.atlasstudio.utbmap.data.Office
 import com.atlasstudio.utbmap.databinding.ItemFavouritesBinding
 
 class FavouritesAdapter(private val listener: OnItemClickListener) :
-    ListAdapter<TouchedLocation, FavouritesAdapter.FavouritesViewHolder>(DiffCallback()) {
+    ListAdapter<Office, FavouritesAdapter.FavouritesViewHolder>(DiffCallback()) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouritesViewHolder {
             val binding = ItemFavouritesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -52,23 +52,23 @@ class FavouritesAdapter(private val listener: OnItemClickListener) :
                 }
             }
 
-            fun bind(location: TouchedLocation) {
+            fun bind(location: Office) {
                 binding.apply {
-                    textViewName.text = location.officeId
+                    textViewName.text = location.id + " - " + location.name
                 }
             }
         }
 
         interface OnItemClickListener {
-            fun onItemClick(favourite: TouchedLocation)
-            fun onButtonDeleteClick(favourite: TouchedLocation)
+            fun onItemClick(favourite: Office)
+            fun onButtonDeleteClick(favourite: Office)
         }
 
-        class DiffCallback : DiffUtil.ItemCallback<TouchedLocation>() {
-            override fun areItemsTheSame(oldItem: TouchedLocation, newItem: TouchedLocation) =
-                oldItem.location == newItem.location
+        class DiffCallback : DiffUtil.ItemCallback<Office>() {
+            override fun areItemsTheSame(oldItem: Office, newItem: Office) =
+                oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: TouchedLocation, newItem: TouchedLocation) =
+            override fun areContentsTheSame(oldItem: Office, newItem: Office) =
                 oldItem == newItem
         }
 }

@@ -2,59 +2,72 @@ package com.atlasstudio.utbmap.data
 
 import android.os.Parcelable
 import androidx.annotation.NonNull
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.parcelize.Parcelize
+import java.lang.reflect.Type
 import java.time.LocalDateTime
+
 
 @Parcelize
 enum class OfficeType : Parcelable {
-        TaxOffice,
-        LabourOffice,
-        DistrictCourt,
-        RegionalCourt,
-        HighCourt,
-        CustomsOffice,
-        CityGovernmentOffice
+        DeansOffice,
+        PersonalOffice,
+        LectureHall,
+        LectureRoom,
+        SeminarRoom,
+        StudyDepartment,
+        StudyRoom,
+        InfoPoint,
+        RestRoom,
+        Closet
 }
 
 @Parcelize
 data class OfficeInfo (
-        var officeHours : Array<LocalDateTime>?,
+        var note : String?,
         var phoneNumber : String?,
-        var note : String?
+        var officeHours : Array<LocalDateTime>?
+        ) : Parcelable
+
+@Parcelize
+data class Bounds (
+        var locationLatMin : Double,
+        var locationLngMin : Double,
+        var locationLatMax : Double,
+        var locationLngMax : Double
         ) : Parcelable
 
 @Entity(tableName="office_table")
 @Parcelize
-data class Office (
+data class Office(
         @PrimaryKey@NonNull
         val id : String,
         var type : OfficeType,
         var name : String,
-        var location : LatLngBounds,
-        var address: String,
-        var info : OfficeInfo
+        @Embedded val bounds : Bounds,
+        var polygonPoints : ArrayList<LatLng>,
+        val zIndex : Int,
+        var info : OfficeInfo,
+        var favourite : Boolean
         ) : Parcelable
 
-
-class LatLngBoundsConverter {
+class LatLngListConverter {
         @TypeConverter
-        fun toLocation(locationString: String?): LatLngBounds? {
-                return try {
-                        Gson().fromJson(locationString, LatLngBounds::class.java)
-                } catch (e: Exception) {
-                        null
-                }
+        fun toLocation(locationsString: String?): ArrayList<LatLng> {
+                val listType: Type = object : TypeToken<ArrayList<LatLng?>?>() {}.type
+                return Gson().fromJson(locationsString, listType)
         }
 
         @TypeConverter
-        fun toLocationString(location: LatLngBounds?): String? {
-                return Gson().toJson(location)
+        fun toLocationString(list: ArrayList<LatLng?>?): String {
+                val gson = Gson()
+                return gson.toJson(list)
         }
 }
 
