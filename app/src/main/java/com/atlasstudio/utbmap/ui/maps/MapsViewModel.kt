@@ -33,7 +33,7 @@ class MapsViewModel @Inject constructor(
     }
 
     fun onReady() {
-        reMark()
+        // called from MapsFragment.onMapReady
     }
 
     fun onPositionSelected(pos: LatLng) {
@@ -106,12 +106,6 @@ class MapsViewModel @Inject constructor(
 
     private fun initialize() {
         state.value = MapsFragmentState.Init
-    }
-
-    private fun reMark() {
-        /*mLastLocation.location?.let {
-            state.value = MapsFragmentState.SetMarkers(mLastLocation)
-        }*/
     }
 
     private fun setLoading(){

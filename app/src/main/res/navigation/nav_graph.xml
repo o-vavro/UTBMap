@@ -19,7 +19,7 @@
         <argument
             android:name="location"
             android:defaultValue="@null"
-            app:argType="com.atlasstudio.utbmap.data.TouchedLocation"
+            app:argType="com.atlasstudio.utbmap.data.Office"
             app:nullable="true" />
     </fragment>
 </navigation>

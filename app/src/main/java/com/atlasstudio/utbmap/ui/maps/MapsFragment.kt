@@ -21,6 +21,7 @@ import com.atlasstudio.utbmap.data.OfficeType
 import com.atlasstudio.utbmap.databinding.FragmentMapsBinding
 //import com.atlasstudio.utbmap.net.utils.ErrorResponseType
 import com.atlasstudio.utbmap.utils.showToast
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.*
@@ -99,18 +100,11 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
         enableCurrentLocation()
 
         val zlin = LatLng(49.2305, 17.6575)
-        /*var currentLocation: LatLng? = null
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zlin, 18.2f))
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         if (mMap.isMyLocationEnabled) {
-            val locationResult = fusedLocationProviderClient.lastLocation
-            locationResult.addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    // Set the map's camera position to the current location of the device.
-                    currentLocation = LatLng(task.result.latitude, task.result.longitude)
-                }*/
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zlin, 18.2f))
-            /*}
-        }*/
+            fusedLocationProviderClient.lastLocation
+        }
 
         observe()
         // re-place markers
