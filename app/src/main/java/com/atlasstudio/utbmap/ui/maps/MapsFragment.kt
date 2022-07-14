@@ -1,5 +1,7 @@
 package com.atlasstudio.utbmap.ui.maps
 
+//import com.atlasstudio.utbmap.net.utils.ErrorResponseType
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,9 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.atlasstudio.utbmap.R
 import com.atlasstudio.utbmap.data.Office
-import com.atlasstudio.utbmap.data.OfficeType
 import com.atlasstudio.utbmap.databinding.FragmentMapsBinding
-//import com.atlasstudio.utbmap.net.utils.ErrorResponseType
 import com.atlasstudio.utbmap.utils.showToast
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -49,7 +49,8 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
     private lateinit var mBinding: FragmentMapsBinding
     private lateinit var mProgress: LinearProgressIndicator
     private lateinit var mMenu: Menu
-    private var mCurrentMarkers: MutableList<Marker?> = mutableListOf()
+    private var mCurrentMarker: Marker? = null
+    private var mCurrentZIndex: Float = 1.0f
 
     private val viewModel: MapsViewModel by viewModels()
 
@@ -99,15 +100,17 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
 
         enableCurrentLocation()
 
-        val zlin = LatLng(49.2305, 17.6575)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zlin, 18.2f))
+        val zlinUTB = LatLng(49.2305, 17.6575)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zlinUTB, 18.2f))
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         if (mMap.isMyLocationEnabled) {
             fusedLocationProviderClient.lastLocation
         }
+        mMap.setMinZoomPreference(18.2f)
+        mMap.setLatLngBoundsForCameraTarget(LatLngBounds(LatLng(49.22965703037514,17.65676606073976),
+                                                         LatLng(49.23134252726122,17.65823349729180)))
 
         observe()
-        // re-place markers
         viewModel.onReady()
 
         mProgress.hide()
@@ -126,13 +129,14 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
 
     override fun onMapLongClick(pos: LatLng) {
         //mTapTextView.text = "long pressed, point=$point"
-        mMap.clear()
+        //mMap.clear()
 
-        //mMap.addMarker(MarkerOptions().position(pos))
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(pos))
-
-        handleFavourite(false)
         viewModel.onPositionSelected(pos)
+
+        // TBD: this should be handled by the viewModel
+        //mMap.addMarker(MarkerOptions().position(pos))
+        //mMap.animateCamera(CameraUpdateFactory.newLatLng(pos))
+        handleFavourite(false)
     }
 
     override fun onCameraIdle() {
@@ -166,6 +170,12 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
                 handleState(state)
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.mPolys
+            .flowWithLifecycle(lifecycle)
+            .onEach { polys ->
+                handlePolygons(polys)
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun observe(){
@@ -195,7 +205,8 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
                         getString(R.string.location_translation_error)
                 })
             }*/
-            //is MapsFragmentState.SetMarkers -> handleMarkers(state.location)
+            is MapsFragmentState.SetMarker -> handleMarker(state.location)
+            is MapsFragmentState.DrawPolygon -> handlePolygon(state.polygonOpts)
             is MapsFragmentState.IsFavourite -> handleFavourite(state.isFavourite)
             is MapsFragmentState.NavigateToFavourites -> handleShowFavourites()
             is MapsFragmentState.Init -> Unit
@@ -212,49 +223,39 @@ class MapsFragment : Fragment(R.layout.fragment_maps),
         }
     }
 
-    /*private fun handleMarkers(lwo: LocationWithOffices) {
-        /*for(marker in mCurrentMarkers) {
-            marker?.remove()
-        }*/
-        mCurrentMarkers.clear()
+    private fun handleMarker(office: Office) {
         mMap.clear()
 
-        val cameraBounds: LatLngBounds.Builder = LatLngBounds.builder()
-        // add office markers
-        for( marker in lwo.offices) {
-                val mark = mMap.addMarker(
-                    MarkerOptions()
-                        .position(marker.location.center)
-                        .title(marker.name)
-                        .icon(when(marker.type) { // this should not be here!!!
-                            OfficeType.CityGovernmentOffice ->
-                                    generateSmallIcon(context!!, R.drawable.ic_city_office)
-                                OfficeType.LabourOffice ->
-                                    generateSmallIcon(context!!, R.drawable.ic_labour_office)
-                                OfficeType.TaxOffice ->
-                                    generateSmallIcon(context!!, R.drawable.ic_tax_office)
-                                OfficeType.CustomsOffice ->
-                                    generateSmallIcon(context!!, R.drawable.ic_customs_office)
-                                OfficeType.HighCourt ->
-                                    generateSmallIcon(context!!, R.drawable.ic_high_court)
-                                OfficeType.RegionalCourt ->
-                                    generateSmallIcon(context!!, R.drawable.ic_regional_court)
-                                OfficeType.DistrictCourt ->
-                                    generateSmallIcon(context!!, R.drawable.ic_district_court)
-                        }))
-                mCurrentMarkers.add(mark)
-                cameraBounds.include(marker.location.center)
-        }
-
+        var polyBounds = LatLngBounds(LatLng(office.bounds.locationLatMin,office.bounds.locationLngMin),
+                                      LatLng(office.bounds.locationLatMax,office.bounds.locationLngMax))
         // add selected location marker
-            val mark = mMap.addMarker(MarkerOptions()
-                .position(lwo.location.location)
-                .title(lwo.location.officeId))
-            mCurrentMarkers.add(mark)
-            cameraBounds.include(lwo.location.location)
+        mCurrentMarker = mMap.addMarker(MarkerOptions()
+                             .position(polyBounds.center)
+                             .title(office.name))
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraBounds.build(), 50))
-    }*/
+        var boundsList = listOf(
+            LatLng(office.bounds.locationLatMin, office.bounds.locationLngMin),
+            LatLng(office.bounds.locationLatMin, office.bounds.locationLngMax),
+            LatLng(office.bounds.locationLatMax, office.bounds.locationLngMin),
+            LatLng(office.bounds.locationLatMax, office.bounds.locationLngMax)
+        )
+
+        if(boundsList.any {
+            !mMap.projection.visibleRegion.latLngBounds.contains(it)
+        })
+        {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(polyBounds, 50))
+        }
+    }
+
+    private fun handlePolygon(polygonOpts: PolygonOptions) {
+        if (polygonOpts.zIndex == mCurrentZIndex) {
+            mMap.addPolygon(polygonOpts)
+            /*mMap.setOnPolylineClickListener (com.google.android.gms.maps.GoogleMap.OnPolylineClickListener {
+
+            })*/
+        }
+    }
 
     private fun handleFavourite(favourite: Boolean) {
         val favouriteMark = mMenu.findItem(R.id.action_mark_favourite)

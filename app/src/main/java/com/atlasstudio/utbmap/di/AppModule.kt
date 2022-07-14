@@ -30,10 +30,10 @@ object AppModule {
     @Provides
     fun provideDatabase(
         app: Application,
-//        callback: OfficeDatabase.Callback
+        callback: LocationOfficeDatabase.Callback
     ) = Room.databaseBuilder(app, LocationOfficeDatabase::class.java, "location_office_database")
         .fallbackToDestructiveMigration()
-        //.addCallback(callback)
+        .addCallback(callback)
         .build()
 
     @Provides

@@ -1,4 +1,6 @@
 package com.atlasstudio.utbmap.repository
+import androidx.lifecycle.asFlow
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.atlasstudio.utbmap.data.*
 /*import com.atlasstudio.utbmap.net.model.CoordinateTranslationResponse
 import com.atlasstudio.utbmap.net.model.OfficeIdResponse
@@ -7,8 +9,7 @@ import com.atlasstudio.utbmap.net.model.RuianAddressResponse
 import com.atlasstudio.utbmap.net.service.*
 import com.atlasstudio.utbmap.net.utils.ErrorResponseType*/
 import com.google.android.gms.maps.model.LatLng
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -100,12 +101,13 @@ class LocationOfficeRepository @Inject constructor(private val officeDao: Office
         }
     }*/
 
-    suspend fun getOffice(location: LatLng): Office?
-    {
-        location.let {
-            return officeDao.getOffice(location.latitude, location.longitude)?.value
+    suspend fun getOffice(location: LatLng): Flow<Office?> = flow {
+        officeDao.getOffice(location.latitude, location.longitude)?.collect {
+            emit(it)
         }
     }
+
+    fun getAllOffices(): Flow<List<Office?>> = officeDao.getAllOffices().asFlow()
 
     suspend fun setFavourite(location: Office?) {
         location?.let {
@@ -159,17 +161,15 @@ class LocationOfficeRepository @Inject constructor(private val officeDao: Office
         }
     }*/
 
-    suspend fun isLocationFavourite(location: LatLng?): Flow<Boolean> = flow {
+    fun isLocationFavourite(location: LatLng?): Flow<Boolean> = flow {
         location?.let {
-            officeDao.getOffice(it.latitude, it.longitude)
-                ?.value?.let {
-                    it.favourite == true
-                }
+            officeDao.getOffice(it.latitude, it.longitude)?.mapLatest {
+                emit(it?.favourite ?: false)
+            }
         }
-        emit(false)
     }
 
-    suspend fun getFavouriteLocations(): Flow<List<Office?>> = flow {
+    fun getFavouriteLocations(): Flow<List<Office?>> = flow {
         officeDao.getFavouriteOffices(true)
             .collect {
                 emit(it)

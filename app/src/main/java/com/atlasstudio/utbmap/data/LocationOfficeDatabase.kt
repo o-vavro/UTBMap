@@ -39,7 +39,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23073128682759, 17.6572508025931),
                         LatLng(49.23077090098592, 17.65723058141206)
                     ),
-                    1,
+                    1.0f,
                     OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/102", OfficeType.InfoPoint, "Recepce",
@@ -52,7 +52,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23074449155056, 17.657284504561503),
                         LatLng(49.23071368052482, 17.65727102377414)
                     ),
-                    1,
+                    1.0f,
                     OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/107", OfficeType.LectureHall, "Hlavní přednášková hala",
@@ -65,7 +65,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23074295569057, 17.656803938128455),
                         LatLng(49.230882150551466, 17.656853509692024)
                     ),
-                    1,
+                    1.0f,
                     OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/108", OfficeType.LectureHall, "Přednášková hala",
@@ -77,7 +77,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230697636348914, 17.65699561484092),
                         LatLng(49.230641526630194, 17.656926214651925)
                     ),
-                    1,
+                    1.0f,
                     OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/118", OfficeType.LectureRoom, "Přednášková místnost",
@@ -89,7 +89,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.657237342954158),
                         LatLng(49.23044048966639, 17.65709885117049)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/119", OfficeType.LectureRoom, "Přednášková místnost",
@@ -101,7 +101,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.65709885117049),
                         LatLng(49.23044048966639, 17.6569781147437)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/120", OfficeType.LectureRoom, "Přednášková místnost",
@@ -113,7 +113,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.6569781147437),
                         LatLng(49.23044048966639, 17.6568893379593)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U52/101", OfficeType.SeminarRoom, "Laboratoř",
@@ -125,7 +125,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230509715471776, 17.65784823276393),
                         LatLng(49.230509715471776, 17.65770328618923)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U52/102", OfficeType.SeminarRoom, "Laboratoř",
@@ -137,7 +137,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.2305653238675, 17.657806560623705),
                         LatLng(49.2305653238675, 17.65770328618923)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U52/107", OfficeType.SeminarRoom, "Laboratoř",
@@ -149,7 +149,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230787756824384, 17.657763076651293),
                         LatLng(49.230787756824384, 17.65763262473407)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U52/108", OfficeType.SeminarRoom, "Laboratoř",
@@ -161,7 +161,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230787756824384, 17.65763262473407),
                         LatLng(49.230787756824384, 17.657503984649026)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U52/109", OfficeType.SeminarRoom, "Laboratoř",
@@ -173,7 +173,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230787756824384, 17.657503984649026),
                         LatLng(49.230787756824384, 17.657290188451352)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U53/107", OfficeType.SeminarRoom, "Laboratoř",
@@ -187,7 +187,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23055230914219, 17.658116383927112),
                         LatLng(49.23055230914219, 17.65803303964666)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U54/102", OfficeType.SeminarRoom, "Laboratoř",
@@ -199,7 +199,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.65822454079671),
                         LatLng(49.23044048966639, 17.658183703475885)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U54/103", OfficeType.SeminarRoom, "Laboratoř",
@@ -211,7 +211,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.658183703475885),
                         LatLng(49.23044048966639, 17.65811978419112)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U54/104", OfficeType.SeminarRoom, "Laboratoř",
@@ -223,7 +223,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.65811978419112),
                         LatLng(49.23044048966639, 17.65805408937066)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U54/105", OfficeType.SeminarRoom, "Laboratoř",
@@ -235,7 +235,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.65805408937066),
                         LatLng(49.23044048966639, 17.657929801872495)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U54/106", OfficeType.LectureRoom, "Přednášková místnost",
@@ -247,7 +247,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.657929801872495),
                         LatLng(49.23044048966639, 17.657801963302955)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U54/107", OfficeType.LectureRoom, "Přednášková místnost",
@@ -259,7 +259,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.657801963302955),
                         LatLng(49.23044048966639, 17.657697206697357)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U54/108", OfficeType.LectureRoom, "Přednášková místnost",
@@ -271,7 +271,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.657697206697357),
                         LatLng(49.23044048966639, 17.65756936812782)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U54/109", OfficeType.LectureRoom, "Přednášková místnost",
@@ -283,7 +283,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.65756936812782),
                         LatLng(49.23044048966639, 17.65744330509397)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U54/110", OfficeType.LectureRoom, "Přednášková místnost",
@@ -297,7 +297,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23044048966639, 17.65744330509397),
                         LatLng(49.23044048966639, 17.657345650631125)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("WC11", OfficeType.RestRoom, "WC/Toaleta",
@@ -309,7 +309,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.2305746264977, 17.656941086120995),
                         LatLng(49.23056707325122, 17.65688820978652)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("WC12", OfficeType.RestRoom, "WC/Toaleta",
@@ -321,7 +321,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230577863602946, 17.65695926236097),
                         LatLng(49.230618866918036, 17.656955957590068)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("WC13", OfficeType.RestRoom, "WC/Toaleta",
@@ -333,7 +333,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230787756824384, 17.657802936959335),
                         LatLng(49.230787756824384, 17.657763076651293)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("WC14", OfficeType.RestRoom, "WC/Toaleta",
@@ -345,7 +345,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230787756824384, 17.65784642093174),
                         LatLng(49.230787756824384, 17.657802936959335)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("WC15", OfficeType.RestRoom, "WC/Toaleta",
@@ -357,7 +357,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230509715471776, 17.657807020726597),
                         LatLng(49.230509715471776, 17.65770328618923)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("WC16", OfficeType.RestRoom, "WC/Toaleta",
@@ -369,7 +369,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.230509715471776, 17.65784823276393),
                         LatLng(49.230509715471776, 17.657807020726597)
                 ),
-                    1,
+                    1.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
 
@@ -383,7 +383,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23081237238585, 17.65705357776785),
                         LatLng(49.23079124957369, 17.656993505388435)
                 ),
-                    2,
+                    2.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/220", OfficeType.LectureHall, "Přednášková hala",
@@ -396,7 +396,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23075654779129, 17.65680173586954),
                         LatLng(49.23081840747339, 17.65679942539341)
                 ),
-                    2,
+                    2.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/218", OfficeType.StudyRoom, "Studovna",
@@ -408,7 +408,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23063282819466, 17.657300798713898),
                         LatLng(49.23063282819466, 17.657173722526675)
                 ),
-                    2,
+                    2.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/203", OfficeType.PersonalOffice, "Kancelář",
@@ -420,7 +420,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23058303851347, 17.657300798713898),
                         LatLng(49.23058303851347, 17.657173722526675)
                 ),
-                    2,
+                    2.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/204", OfficeType.PersonalOffice, "Kancelář",
@@ -432,7 +432,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23052872244039, 17.657300798713898),
                         LatLng(49.23052872244039, 17.657213000620906)
                 ),
-                    2,
+                    2.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
                 dao.addOffice(Office("U51/205", OfficeType.PersonalOffice, "Kancelář",
@@ -444,7 +444,7 @@ abstract class LocationOfficeDatabase: RoomDatabase() {
                         LatLng(49.23050458194431, 17.657300798713898),
                         LatLng(49.23050458194431, 17.657213000620906)
                 ),
-                    2,
+                    2.0f,
                             OfficeInfo(null, null, null),
                     favourite = false))
             }

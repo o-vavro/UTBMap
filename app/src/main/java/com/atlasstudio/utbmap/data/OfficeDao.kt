@@ -1,7 +1,9 @@
 package com.atlasstudio.utbmap.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -10,19 +12,21 @@ interface OfficeDao {
     suspend fun addOffice(office: Office)
 
     @Query("SELECT DISTINCT * FROM office_table WHERE id LIKE :id")
-    fun getOffice(id: String): LiveData<Office?>?
+    fun getOffice(id: String): Flow<Office?>?
 
-    @Query("SELECT DISTINCT * FROM office_table WHERE locationLngMin <= :lng AND locationLngMax >= :lng AND locationLatMin <= :lat AND locationLatMax >= :lat")
-    fun getOffice(lat: Double, lng: Double): LiveData<Office?>?
+    /*@RawQuery(observedEntities = [Office::class])
+    fun getOffice(query: SupportSQLiteQuery): PagingSource<Int, Office>*/
+    @Query("SELECT DISTINCT * FROM office_table WHERE bds_locationLngMin <= :lng AND bds_locationLngMax >= :lng AND bds_locationLatMin <= :lat AND bds_locationLatMax >= :lat")
+    fun getOffice(lat: Double, lng: Double): Flow<Office?>?
 
     @Query("SELECT DISTINCT * FROM office_table WHERE favourite LIKE :favourite")
     fun getFavouriteOffices(favourite: Boolean): Flow<List<Office?>>
 
-    @Query("SELECT DISTINCT * FROM office_table WHERE locationLngMin <= :locationLngMax AND locationLngMax >= :locationLngMin AND locationLatMin <= :locationLatMax AND locationLatMax >= :locationLatMin")
+    @Query("SELECT DISTINCT * FROM office_table WHERE bds_locationLngMin <= :locationLngMax AND bds_locationLngMax >= :locationLngMin AND bds_locationLatMin <= :locationLatMax AND bds_locationLatMax >= :locationLatMin")
     fun getIntersectingOffices(locationLatMin: Double, locationLatMax: Double, locationLngMin: Double, locationLngMax: Double): LiveData<List<Office?>?>?
 
     @Query("SELECT DISTINCT * FROM office_table")
-    fun getAllOffices(): LiveData<List<Office?>?>?
+    fun getAllOffices(): LiveData<List<Office?>>
 
     /*@Delete
     suspend fun deleteOffice(office: Office)

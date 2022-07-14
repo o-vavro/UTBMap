@@ -50,9 +50,9 @@ data class Office(
         val id : String,
         var type : OfficeType,
         var name : String,
-        @Embedded val bounds : Bounds,
+        @Embedded(prefix = "bds_") val bounds : Bounds,
         var polygonPoints : ArrayList<LatLng>,
-        val zIndex : Int,
+        val zIndex : Float,
         var info : OfficeInfo,
         var favourite : Boolean
         ) : Parcelable
