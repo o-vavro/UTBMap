@@ -5,11 +5,16 @@
       <map>
         <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/drawable-v24/bg_gradient.xml" value="0.2985" />
         <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/drawable/fg_launcher.xml" value="0.2985" />
+        <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/drawable/ic_city_office.xml" value="0.1495" />
+        <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/drawable/ic_location.xml" value="0.1495" />
         <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/drawable/ic_tax_office_marker.xml" value="0.26" />
         <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/drawable/ic_utb_logo.xml" value="0.26" />
         <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/drawable/splash_fg.xml" value="0.2985" />
         <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/layout/custom_info_contents.xml" value="0.365625" />
         <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/layout/fragment_favourites.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/layout/fragment_maps.xml" value="0.1546875" />
+        <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/layout/item_favourites.xml" value="0.1546875" />
         <entry key="..\:/Users/ondre/Desktop/UTB/2021_2022_summer/PO/UTBMap/app/src/main/res/menu/menu_fragment_maps.xml" value="0.36666666666666664" />
       </map>
     </option>

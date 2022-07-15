@@ -1,9 +1,10 @@
 package com.atlasstudio.utbmap.data
 
 import androidx.lifecycle.LiveData
-import androidx.paging.PagingSource
-import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteQuery
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,8 +17,8 @@ interface OfficeDao {
 
     /*@RawQuery(observedEntities = [Office::class])
     fun getOffice(query: SupportSQLiteQuery): PagingSource<Int, Office>*/
-    @Query("SELECT DISTINCT * FROM office_table WHERE bds_locationLngMin <= :lng AND bds_locationLngMax >= :lng AND bds_locationLatMin <= :lat AND bds_locationLatMax >= :lat")
-    fun getOffice(lat: Double, lng: Double): Flow<Office?>?
+    @Query("SELECT DISTINCT * FROM office_table WHERE bds_locationLngMin <= :lng AND bds_locationLngMax >= :lng AND bds_locationLatMin <= :lat AND bds_locationLatMax >= :lat AND zIndex == :zIndex")
+    fun getOffice(lat: Double, lng: Double, zIndex: Float): Flow<Office?>?
 
     @Query("SELECT DISTINCT * FROM office_table WHERE favourite LIKE :favourite")
     fun getFavouriteOffices(favourite: Boolean): Flow<List<Office?>>
@@ -27,6 +28,9 @@ interface OfficeDao {
 
     @Query("SELECT DISTINCT * FROM office_table")
     fun getAllOffices(): LiveData<List<Office?>>
+
+    @Query("SELECT DISTINCT zIndex FROM office_table")
+    fun getZIndices(): Flow<List<Float>>
 
     /*@Delete
     suspend fun deleteOffice(office: Office)

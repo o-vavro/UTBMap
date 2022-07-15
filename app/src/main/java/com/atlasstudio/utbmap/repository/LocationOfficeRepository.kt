@@ -101,8 +101,8 @@ class LocationOfficeRepository @Inject constructor(private val officeDao: Office
         }
     }*/
 
-    suspend fun getOffice(location: LatLng): Flow<Office?> = flow {
-        officeDao.getOffice(location.latitude, location.longitude)?.collect {
+    suspend fun getOffice(location: LatLng, zIndex: Float): Flow<Office?> = flow {
+        officeDao.getOffice(location.latitude, location.longitude, zIndex)?.collect {
             emit(it)
         }
     }
@@ -161,9 +161,9 @@ class LocationOfficeRepository @Inject constructor(private val officeDao: Office
         }
     }*/
 
-    fun isLocationFavourite(location: LatLng?): Flow<Boolean> = flow {
+    fun isLocationFavourite(location: LatLng?, zIndex: Float): Flow<Boolean> = flow {
         location?.let {
-            officeDao.getOffice(it.latitude, it.longitude)?.mapLatest {
+            officeDao.getOffice(it.latitude, it.longitude, zIndex)?.mapLatest {
                 emit(it?.favourite ?: false)
             }
         }
@@ -174,6 +174,12 @@ class LocationOfficeRepository @Inject constructor(private val officeDao: Office
             .collect {
                 emit(it)
             }
+    }
+
+    fun getZIndicesList(): Flow<List<Float>> = flow {
+        officeDao.getZIndices().collect {
+            emit(it)
+        }
     }
 
     /*suspend fun getLocatedOfficesForFavourite(location: TouchedLocation) = flow {

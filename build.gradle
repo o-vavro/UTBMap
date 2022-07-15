@@ -38,6 +38,8 @@ buildscript {
         retrofitVersion = "2.9.0"
         okHttpVersion = "4.9.0"
         gsonVersion = "2.8.9"
+
+        horizontalPicker = "v1.0"
     }
     repositories {
         google()
@@ -65,6 +67,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 

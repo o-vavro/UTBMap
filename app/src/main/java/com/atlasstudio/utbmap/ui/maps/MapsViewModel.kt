@@ -14,10 +14,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Polygon
 import com.google.android.gms.maps.model.PolygonOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,13 +26,17 @@ class MapsViewModel @Inject constructor(
     private val state = MutableStateFlow<MapsFragmentState>(MapsFragmentState.Init)
     val mState: StateFlow<MapsFragmentState> get() = state
 
-    private val polys = MutableStateFlow<List<PolygonOptions>>(emptyList())
+    private val polys = MutableStateFlow<MutableList<PolygonOptions>>(mutableListOf<PolygonOptions>())
     val mPolys: StateFlow<List<PolygonOptions>> get() = polys
 
     private var mLastLocation: LatLng = LatLng(0.0, 0.0)
     val lastPosition: LatLng? get() = mLastLocation
+
     private var mLastZoom: Float = 18.2f
     val lastZoom: Float get() = mLastZoom
+
+    private var mCurrentZIndex: Float = 1.0f
+    val currentZIndex: Float get() = mCurrentZIndex
 
     fun onStart() {
         initialize()
@@ -47,6 +48,7 @@ class MapsViewModel @Inject constructor(
         viewModelScope.launch {
             // get all visible offices and drow their polygons
             repo.getAllOffices().collect { result ->
+                var officeList: MutableList<PolygonOptions> = mutableListOf<PolygonOptions>()
                 for(office in result) {
                     office?.let {
                         var color = Color.GREEN
@@ -63,7 +65,8 @@ class MapsViewModel @Inject constructor(
                             OfficeType.StudyDepartment -> color = Color.LTGRAY
                             OfficeType.StudyRoom -> color = Color.GRAY
                         }
-                        drawPolygon(PolygonOptions().addAll(it.polygonPoints)
+                        //drawPolygon(PolygonOptions().addAll(it.polygonPoints)
+                        officeList.add(PolygonOptions().addAll(it.polygonPoints)
                                                     .zIndex(it.zIndex)
                                                     .fillColor(color)
                                                     .strokeWidth(1.0f)
@@ -71,6 +74,7 @@ class MapsViewModel @Inject constructor(
 
                     }
                 }
+                drawPolygons(officeList)
             }
         }
     }
@@ -78,7 +82,7 @@ class MapsViewModel @Inject constructor(
     fun onPositionSelected(pos: LatLng) {
         mLastLocation = pos
             viewModelScope.launch {
-                repo.getOffice(pos).collect { result ->
+                repo.getOffice(pos, mCurrentZIndex).collect { result ->
                     result?.let {
                         var bounds = LatLngBounds(LatLng(result.bounds.locationLatMin,result.bounds.locationLngMin),
                                      LatLng(result.bounds.locationLatMin, result.bounds.locationLngMax)                        )
@@ -116,7 +120,7 @@ class MapsViewModel @Inject constructor(
 
     fun storeCurrentLocation() {
         viewModelScope.launch {
-            repo.getOffice(mLastLocation).collect { result ->
+            repo.getOffice(mLastLocation, mCurrentZIndex).collect { result ->
                 result?.let {
                     repo.setFavourite(result)
                 }
@@ -126,7 +130,7 @@ class MapsViewModel @Inject constructor(
 
     fun deleteCurrentLocation() {
         viewModelScope.launch {
-            repo.getOffice(mLastLocation).collect { result ->
+            repo.getOffice(mLastLocation, mCurrentZIndex).collect { result ->
                 result?.let {
                     repo.unsetFavourite(result)
                 }
@@ -137,7 +141,7 @@ class MapsViewModel @Inject constructor(
 
     fun checkCurrentLocationFavourite() {
         viewModelScope.launch {
-            repo.isLocationFavourite(mLastLocation)
+            repo.isLocationFavourite(mLastLocation, mCurrentZIndex)
                 .collect {
                     setFavourite(it)
                 }
@@ -150,6 +154,51 @@ class MapsViewModel @Inject constructor(
                 //setMarkers(location)
                 mLastLocation = location
                 checkCurrentLocationFavourite()
+            }
+        }
+    }
+
+    fun getZIndicesList() {
+        viewModelScope.launch {
+            repo.getZIndicesList()
+                .collect {
+                    setZIndices(it)
+                }
+        }
+    }
+
+    fun setZIndex(zIndex: Float) {
+        mCurrentZIndex = zIndex
+        viewModelScope.launch {
+            // get all visible offices and drow their polygons
+            repo.getAllOffices().collect { result ->
+                var officeList: MutableList<PolygonOptions> = mutableListOf<PolygonOptions>()
+                for(office in result) {
+                    office?.let {
+                        var color = Color.GREEN
+                        when(it.type)
+                        {
+                            OfficeType.Closet -> color = Color.CYAN
+                            OfficeType.DeansOffice -> color = Color.RED
+                            OfficeType.InfoPoint -> color = Color.BLUE
+                            OfficeType.LectureHall -> color = Color.YELLOW
+                            OfficeType.LectureRoom -> color = Color.MAGENTA
+                            OfficeType.RestRoom -> color = Color.WHITE
+                            OfficeType.PersonalOffice -> color = Color.DKGRAY
+                            OfficeType.SeminarRoom -> color = Color.BLACK
+                            OfficeType.StudyDepartment -> color = Color.LTGRAY
+                            OfficeType.StudyRoom -> color = Color.GRAY
+                        }
+                        //drawPolygon(PolygonOptions().addAll(it.polygonPoints)
+                        officeList.add(PolygonOptions().addAll(it.polygonPoints)
+                            .zIndex(it.zIndex)
+                            .fillColor(color)
+                            .strokeWidth(1.0f)
+                            .clickable(true))
+
+                    }
+                }
+                drawPolygons(officeList)
             }
         }
     }
@@ -182,8 +231,9 @@ class MapsViewModel @Inject constructor(
         state.value = MapsFragmentState.SetMarkers(location)
     }*/
 
-    private fun drawPolygon(polygonOpts: PolygonOptions) {
-        state.value = MapsFragmentState.DrawPolygon(polygonOpts)
+    private fun drawPolygons(polygonOptsList: MutableList<PolygonOptions>) {
+        polys.value = polygonOptsList
+        //state.value = MapsFragmentState.DrawPolygon(polygonOpts)
     }
 
     private fun setFavourite(favourite: Boolean) {
@@ -193,6 +243,10 @@ class MapsViewModel @Inject constructor(
     private fun navigateToFavourites() {
         state.value = MapsFragmentState.NavigateToFavourites
     }
+
+    private fun setZIndices(zIndices: List<Float>) {
+        state.value = MapsFragmentState.SetZIndices(zIndices)
+    }
 }
 
 sealed class MapsFragmentState {
@@ -201,7 +255,8 @@ sealed class MapsFragmentState {
     data class ShowToast(val message : String) : MapsFragmentState()
     //data class ShowTypeToast(val error : ErrorResponseType) : MapsFragmentState()
     data class SetMarker(val location : Office) : MapsFragmentState()
-    data class DrawPolygon(val polygonOpts : PolygonOptions) : MapsFragmentState()
+    //data class DrawPolygon(val polygonOpts : PolygonOptions) : MapsFragmentState()
+    data class SetZIndices(val zIndices: List<Float>) : MapsFragmentState()
     data class IsFavourite(val isFavourite : Boolean) : MapsFragmentState()
     object NavigateToFavourites : MapsFragmentState()
 }
